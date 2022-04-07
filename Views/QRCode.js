@@ -70,4 +70,6 @@ const styles = StyleSheet.create({
 });
 
 export default ScanScreen;
+/*
 AppRegistry.registerComponent('QRCodeApp', () => ScanScreen);
+*/
