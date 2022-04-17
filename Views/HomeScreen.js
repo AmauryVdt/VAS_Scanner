@@ -1,13 +1,13 @@
-import React from 'react';
-import {Button, Text} from 'react-native';
+import React, {useContext} from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context/src/SafeAreaContext';
 import ScanScreen from './QRCode';
+import {AuthContext} from '../App';
 
 const HomeScreen = () => {
   return (
     <SafeAreaProvider
       style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <ScanScreen />
+      <ScanScreen token={useContext(AuthContext).token} />
     </SafeAreaProvider>
   );
 };
