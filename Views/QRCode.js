@@ -18,9 +18,9 @@ class ScanScreen extends Component {
     }, 2000);
     this.scan(e.data);
   };
-  scan = data => {
+  scan = e_data => {
     try {
-      const qr_code_data = JSON.parse(data);
+      const qr_code_data = JSON.parse(e_data);
       console.log('nom', qr_code_data.nom);
       console.log('prenom', qr_code_data.prenom);
       console.log('uuid', qr_code_data.uuid);
