@@ -16,44 +16,51 @@ class ScanScreen extends Component {
     setTimeout(_ => {
       this.scanner.reactivate();
     }, 2000);
-    this.scan(JSON.parse(e.data));
+    this.scan(e.data);
   };
-  scan = qr_code_data => {
-    console.log('nom', qr_code_data.nom);
-    console.log('prenom', qr_code_data.prenom);
-    console.log('uuid', qr_code_data.uuid);
-    if (!(qr_code_data.uuid == null && qr_code_data.nom && null && qr_code_data.prenom == null)) {
-      const requestOptions = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'authorization': this.props.token,
-        },
-        body: JSON.stringify({message: 'message'}),
-      };
-      fetch(`${URL_API_ONLINE}/client/scan/${qr_code_data.uuid}`, requestOptions)
-        .then(response => {
-          this.setState({response_code: response.status});
-          return response.json();
-        })
-        .then(data => {
-          if (this.state.response_code === 200) {
-            const client = data.client;
-            console.log(`${client.last_name.toUpperCase()} ${client.first_name} ${Number(client.scan_count) > 1 ? `a déjà été scanné ${Number(client.scan_count) - 1} fois ❌` : 'a été scanné ✅'}`);
-            this.setState({
-              message: `${client.last_name.toUpperCase()} ${client.first_name} ${Number(client.scan_count) > 1 ? `a déjà été scanné ${Number(client.scan_count) - 1} fois ❌` : 'a été scanné ✅'}`
-            });
-          } else if (this.state.response_code === 401) {
-            this.setState({
-              message: "Le client n'est pas dans la base de données ❌",
-            });
-          } else {
-            this.setState({
-              message: 'Une erreur est survenu, veuillez réessayer ⚠️',
-            });
-          }
+  scan = data => {
+    try {
+      const qr_code_data = JSON.parse(data);
+      console.log('nom', qr_code_data.nom);
+      console.log('prenom', qr_code_data.prenom);
+      console.log('uuid', qr_code_data.uuid);
+      if (!(qr_code_data.uuid == null && qr_code_data.nom && null && qr_code_data.prenom == null)) {
+        const requestOptions = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'authorization': this.props.token,
+          },
+          body: JSON.stringify({message: 'message'}),
+        };
+        fetch(`${URL_API_ONLINE}/client/scan/${qr_code_data.uuid}`, requestOptions)
+          .then(response => {
+            this.setState({response_code: response.status});
+            return response.json();
+          })
+          .then(data => {
+            if (this.state.response_code === 200) {
+              const client = data.client;
+              console.log(`${client.last_name.toUpperCase()} ${client.first_name} ${Number(client.scan_count) > 1 ? `a déjà été scanné ${Number(client.scan_count) - 1} fois ❌` : 'a été scanné ✅'}`);
+              this.setState({
+                message: `${client.last_name.toUpperCase()} ${client.first_name} ${Number(client.scan_count) > 1 ? `a déjà été scanné ${Number(client.scan_count) - 1} fois ❌` : 'a été scanné ✅'}`
+              });
+            } else if (this.state.response_code === 401) {
+              this.setState({
+                message: "Le client n'est pas dans la base de données ❌",
+              });
+            } else {
+              this.setState({
+                message: 'Une erreur est survenu, veuillez réessayer ⚠️',
+              });
+            }
+          });
+      } else {
+        this.setState({
+          message: "Le QR Code n'est pas valide ❌️",
         });
-    } else {
+      }
+    } catch (error) {
       this.setState({
         message: "Le QR Code n'est pas valide ❌️",
       });
