@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, Modal, Pressable, Alert } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {SafeAreaProvider} from 'react-native-safe-area-context/src/SafeAreaContext';
 import {URL_API_ONLINE} from '../conf';
@@ -10,20 +10,18 @@ class ScanScreen extends Component {
     this.state = {
       message: 'Aucun client scanné',
       response_code: 0,
+      modalVisible: false,
     };
   }
   onSuccess = e => {
-    setTimeout(_ => {
-      this.scanner.reactivate();
-    }, 2000);
+    // setTimeout(_ => {
+    //   this.scanner.reactivate();
+    // }, 2000);
     this.scan(e.data);
   };
   scan = e_data => {
     try {
       const qr_code_data = JSON.parse(e_data);
-      console.log('nom', qr_code_data.nom);
-      console.log('prenom', qr_code_data.prenom);
-      console.log('uuid', qr_code_data.uuid);
       if (!(qr_code_data.uuid == null && qr_code_data.nom && null && qr_code_data.prenom == null)) {
         const requestOptions = {
           method: 'POST',
@@ -65,6 +63,14 @@ class ScanScreen extends Component {
         message: "Le QR Code n'est pas valide ❌️",
       });
     }
+    this.showModal();
+  };
+  showModal = _ => {
+    this.setState({modalVisible: true});
+  };
+  buttonCloseModal = _ => {
+    this.setState({modalVisible: !this.state.modalVisible});
+    this.scanner.reactivate();
   };
 
   render() {
@@ -79,15 +85,36 @@ class ScanScreen extends Component {
           topContent={
             <Text style={styles.centerText}>Scannez le QR code du client </Text>
           }
-          bottomContent={
-            <View>
-              <TouchableOpacity style={styles.buttonTouchable}>
-                <Text style={styles.buttonText}>Appuyer pour scanner</Text>
-              </TouchableOpacity>
-              <Text style={{textAlign: 'center'}}>{this.state.message}</Text>
-            </View>
-          }
+          // bottomContent={
+          //   <View>
+          //     <TouchableOpacity
+          //       style={styles.buttonTouchable}
+          //       onPress={_ => this.showModal()}>
+          //       <Text style={styles.buttonText}>Appuyer pour scanner</Text>
+          //     </TouchableOpacity>
+          //     <Text style={{textAlign: 'center'}}>{this.state.message}</Text>
+          //   </View>
+          // }
         />
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            this.setState({modalVisible: !this.state.modalVisible});
+          }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>{this.state.message}</Text>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={this.buttonCloseModal}>
+                <Text style={styles.textStyle}>Ok</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
       </SafeAreaProvider>
     );
   }
@@ -134,6 +161,7 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
+    color: 'black',
   },
   centerText: {
     flex: 1,
