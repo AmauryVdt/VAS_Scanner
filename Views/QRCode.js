@@ -330,7 +330,7 @@ const styles = StyleSheet.create({
     width: rectDimensions,
     borderWidth: rectBorderWidth,
     borderColor: rectBorderColor,
-    marginTop: '40%',
+    marginTop: SCREEN_HEIGHT * 0.15,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'transparent',
