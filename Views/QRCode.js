@@ -182,8 +182,8 @@ class ScanScreen extends Component {
             <View style={styles.modalView}>
               <LottieView
                 style={{position: 'relative', left: 0}}
-                height={150}
-                width={150}
+                height={SCREEN_HEIGHT * 0.15}
+                width={SCREEN_WIDTH * 0.15}
                 source={this.state.animation}
                 autoPlay
                 loop={false}
@@ -277,12 +277,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   modalText: {
-    fontSize: 20,
+    fontSize: 17,
     textAlign: 'center',
     color: 'black',
   },
   modalName: {
-    fontSize: 25,
+    fontSize: 22,
     textAlign: 'center',
     color: 'black',
     fontWeight: 'bold',
