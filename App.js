@@ -28,11 +28,14 @@ export default function App() {
         }
       });
   };
+  const log_out = _ => {
+    setToken('Vendée Air Show 2022');
+  };
 
   if (token) {
     return (
       <AuthContext.Provider value={{token, setToken}}>
-        <HomeScreen />
+        <HomeScreen log_out={log_out} />
       </AuthContext.Provider>
     );
   } else {

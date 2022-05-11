@@ -10,7 +10,7 @@ import {
   Platform,
   StatusBar,
   Dimensions, Image,
-} from "react-native";
+} from 'react-native';
 import LottieView from 'lottie-react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {SafeAreaProvider} from 'react-native-safe-area-context/src/SafeAreaContext';
@@ -38,9 +38,6 @@ class ScanScreen extends Component {
   }
 
   onSuccess = e => {
-    // setTimeout(_ => {
-    //   this.scanner.reactivate();
-    // }, 2000);
     this.scan(e.data);
   };
   scan = e_data => {
@@ -106,14 +103,14 @@ class ScanScreen extends Component {
           });
       } else {
         this.setState({
-          message: "Le QR Code n'est pas valide ❌️",
+          message: "Le QR Code n'est pas valide.",
           person_name: undefined,
           animation: require('../assets/91878-bouncy-fail.json'),
         });
       }
     } catch (error) {
       this.setState({
-        message: "Le QR Code n'est pas valide ❌️",
+        message: "Le QR Code n'est pas valide.",
         person_name: undefined,
         animation: require('../assets/91878-bouncy-fail.json'),
       });
@@ -141,6 +138,9 @@ class ScanScreen extends Component {
           bottomContent={
             <View style={styles.bottomContent}>
               <Pressable
+                onPressOut={_ => {
+                  this.props.log_out();
+                }}
                 style={{
                   borderRadius: 30,
                   backgroundColor: '#ea4f4f',
