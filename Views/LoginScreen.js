@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Text, TextInput, View} from 'react-native';
+import { Image, Pressable, Text, TextInput, View } from "react-native";
 import {SafeAreaProvider} from 'react-native-safe-area-context/src/SafeAreaContext';
 
 const LoginScreen = ({log_in, errorMessage}) => {
@@ -8,27 +8,79 @@ const LoginScreen = ({log_in, errorMessage}) => {
 
   return (
     <SafeAreaProvider
-      style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Connexion</Text>
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+      <Image
+        source={require('../assets/airshowAffiche.png')}
+        style={{
+          width: 300,
+          height: 150,
+          left: 0,
+          top: -40,
+          position: 'relative',
+        }}
+      />
+      <View>
+        <TextInput
+          placeholder="Username"
+          placeholderTextColor={'#00508B'}
+          value={login}
+          onChangeText={text => setLogin(text)}
+          style={{
+            borderRadius: 10,
+            width: 240,
+            backgroundColor: '#ffffff',
+            borderStyle: 'solid',
+            borderColor: '#00508B',
+            borderWidth: 2,
+            padding: 15,
+            color: '#003356',
+            margin: 10,
+            fontSize: 17,
+          }}
+        />
+        <TextInput
+          secureTextEntry={true}
+          placeholder="Mot de passe"
+          placeholderTextColor={'#00508B'}
+          value={password}
+          onChangeText={text => setPassword(text)}
+          style={{
+            borderRadius: 10,
+            width: 240,
+            backgroundColor: '#ffffff',
+            borderStyle: 'solid',
+            borderColor: '#00508B',
+            borderWidth: 2,
+            padding: 15,
+            color: '#003356',
+            margin: 10,
+            fontSize: 17,
+          }}
+        />
+      </View>
       {errorMessage !== '' && (
         <Text style={{color: 'red'}}>{errorMessage}</Text>
       )}
-      <View>
-        <Text>Pseudo</Text>
-        <TextInput
-          placeholder="Ton pseudo..."
-          value={login}
-          onChangeText={text => setLogin(text)}
-        />
-        <Text>Mot de Passe</Text>
-        <TextInput
-          secureTextEntry={true}
-          placeholder="Ton mot de passe..."
-          value={password}
-          onChangeText={text => setPassword(text)}
-        />
-      </View>
-      <Button title="Connexion" onPress={() => log_in(login, password)} />
+      <Pressable
+        title="Connexion"
+        borderless={true}
+        onPress={() => log_in(login, password)}
+        style={{
+          borderRadius: 30,
+          width: 170,
+          backgroundColor: '#00508B',
+          padding: 15,
+          color: '#ffffff',
+          margin: 40,
+        }}>
+        <Text style={{textAlign: 'center', color: '#FFFFFF', fontSize: 17}}>
+          Connexion
+        </Text>
+      </Pressable>
     </SafeAreaProvider>
   );
 };
