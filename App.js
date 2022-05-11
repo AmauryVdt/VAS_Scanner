@@ -29,7 +29,7 @@ export default function App() {
       });
   };
   const log_out = _ => {
-    setToken('Vendée Air Show 2022');
+    setToken('');
   };
 
   if (token) {
